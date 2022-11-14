@@ -29,6 +29,9 @@ public class CardStackView extends RecyclerView {
 
     @Override
     public void setLayoutManager(LayoutManager manager) {
+        if (isInEditMode())
+            return;
+
         if (manager instanceof CardStackLayoutManager) {
             super.setLayoutManager(manager);
         } else {
