@@ -48,7 +48,7 @@ public class CardStackLayoutManager
 
     @Override
     public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State s) {
-        update(recycler);
+        update(recycler, s);
         if (s.didStructureChange()) {
             View topView = getTopView();
             if (topView != null) {
@@ -77,25 +77,25 @@ public class CardStackLayoutManager
             case Idle:
                 if (setting.swipeableMethod.canSwipeManually()) {
                     state.dx -= dx;
-                    update(recycler);
+                    update(recycler, s);
                     return dx;
                 }
                 break;
             case Dragging:
                 if (setting.swipeableMethod.canSwipeManually()) {
                     state.dx -= dx;
-                    update(recycler);
+                    update(recycler, s);
                     return dx;
                 }
                 break;
             case RewindAnimating:
                 state.dx -= dx;
-                update(recycler);
+                update(recycler, s);
                 return dx;
             case AutomaticSwipeAnimating:
                 if (setting.swipeableMethod.canSwipeAutomatically()) {
                     state.dx -= dx;
-                    update(recycler);
+                    update(recycler, s);
                     return dx;
                 }
                 break;
@@ -104,7 +104,7 @@ public class CardStackLayoutManager
             case ManualSwipeAnimating:
                 if (setting.swipeableMethod.canSwipeManually()) {
                     state.dx -= dx;
-                    update(recycler);
+                    update(recycler, s);
                     return dx;
                 }
                 break;
@@ -125,25 +125,25 @@ public class CardStackLayoutManager
             case Idle:
                 if (setting.swipeableMethod.canSwipeManually()) {
                     state.dy -= dy;
-                    update(recycler);
+                    update(recycler, s);
                     return dy;
                 }
                 break;
             case Dragging:
                 if (setting.swipeableMethod.canSwipeManually()) {
                     state.dy -= dy;
-                    update(recycler);
+                    update(recycler, s);
                     return dy;
                 }
                 break;
             case RewindAnimating:
                 state.dy -= dy;
-                update(recycler);
+                update(recycler, s);
                 return dy;
             case AutomaticSwipeAnimating:
                 if (setting.swipeableMethod.canSwipeAutomatically()) {
                     state.dy -= dy;
-                    update(recycler);
+                    update(recycler, s);
                     return dy;
                 }
                 break;
@@ -152,7 +152,7 @@ public class CardStackLayoutManager
             case ManualSwipeAnimating:
                 if (setting.swipeableMethod.canSwipeManually()) {
                     state.dy -= dy;
-                    update(recycler);
+                    update(recycler, s);
                     return dy;
                 }
                 break;
@@ -248,7 +248,7 @@ public class CardStackLayoutManager
         }
     }
 
-    private void update(RecyclerView.Recycler recycler) {
+    private void update(RecyclerView.Recycler recycler, RecyclerView.State s) {
         state.width = getWidth();
         state.height = getHeight();
 
@@ -326,7 +326,7 @@ public class CardStackLayoutManager
         final int parentLeft = getPaddingLeft();
         final int parentRight = getWidth() - getPaddingLeft();
         final int parentBottom = getHeight() - getPaddingBottom();
-        for (int i = state.topPosition; i < state.topPosition + setting.visibleCount && i < getItemCount(); i++) {
+        for (int i = state.topPosition; i < state.topPosition + setting.visibleCount && i < s.getItemCount(); i++) {
             View child = recycler.getViewForPosition(i);
             addView(child, 0);
             measureChildWithMargins(child, 0, 0);
