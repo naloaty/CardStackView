@@ -333,23 +333,23 @@ public class CardStackLayoutManager
             layoutDecoratedWithMargins(child, parentLeft, parentTop, parentRight, parentBottom);
 
             resetTranslation(child);
-            resetScale(child);
-            resetRotation(child);
-            resetOverlay(child);
-            resetScalingFade(child);
+            //resetScale(child);
+            //resetRotation(child);
+            //resetOverlay(child);
+            //resetScalingFade(child);
 
             if (i == state.topPosition) {
                 updateTranslation(child);
-                // resetScale(child);
+                resetScale(child);
                 updateRotation(child);
                 updateOverlay(child);
-                // resetScalingFade(child);
+                resetScalingFade(child);
             } else {
                 int currentIndex = i - state.topPosition;
                 updateTranslation(child, currentIndex);
                 updateScale(child, currentIndex);
-                // resetRotation(child);
-                // resetOverlay(child);
+                resetRotation(child);
+                resetOverlay(child);
                 updateScalingFade(child, currentIndex);
             }
         }
