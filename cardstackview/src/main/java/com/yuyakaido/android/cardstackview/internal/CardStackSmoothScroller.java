@@ -37,12 +37,13 @@ public class CardStackSmoothScroller extends RecyclerView.SmoothScroller {
             @NonNull Action action
     ) {
         if (type == ScrollType.AutomaticRewind) {
-            RewindAnimationSetting setting = manager.getCardStackSetting().rewindAnimationSetting;
+            CardStackSetting stackSetting = manager.getCardStackSetting();
+            RewindAnimationSetting animSetting = stackSetting.rewindAnimationSetting;
             action.update(
-                    -getDx(setting),
-                    -getDy(setting),
-                    setting.getDuration(),
-                    setting.getInterpolator()
+                    -getDx(animSetting, stackSetting),
+                    -getDy(animSetting, stackSetting),
+                    animSetting.getDuration(),
+                    animSetting.getInterpolator()
             );
         }
     }
@@ -55,44 +56,46 @@ public class CardStackSmoothScroller extends RecyclerView.SmoothScroller {
     ) {
         int x = (int) targetView.getTranslationX();
         int y = (int) targetView.getTranslationY();
-        AnimationSetting setting;
+        AnimationSetting animSetting;
+        CardStackSetting stackSetting;
         switch (type) {
             case AutomaticSwipe:
-                setting = manager.getCardStackSetting().swipeAnimationSetting;
+                stackSetting = manager.getCardStackSetting();
+                animSetting = stackSetting.swipeAnimationSetting;
                 action.update(
-                        -getDx(setting),
-                        -getDy(setting),
-                        setting.getDuration(),
-                        setting.getInterpolator()
+                        -getDx(animSetting, stackSetting),
+                        -getDy(animSetting, stackSetting),
+                        animSetting.getDuration(),
+                        animSetting.getInterpolator()
                 );
                 break;
             case AutomaticRewind:
-                setting = manager.getCardStackSetting().rewindAnimationSetting;
+                animSetting = manager.getCardStackSetting().rewindAnimationSetting;
                 action.update(
                         x,
                         y,
-                        setting.getDuration(),
-                        setting.getInterpolator()
+                        animSetting.getDuration(),
+                        animSetting.getInterpolator()
                 );
                 break;
             case ManualSwipe:
                 int dx = -x * 10;
                 int dy = -y * 10;
-                setting = manager.getCardStackSetting().swipeAnimationSetting;
+                animSetting = manager.getCardStackSetting().swipeAnimationSetting;
                 action.update(
                         dx,
                         dy,
-                        setting.getDuration(),
-                        setting.getInterpolator()
+                        animSetting.getDuration(),
+                        animSetting.getInterpolator()
                 );
                 break;
             case ManualCancel:
-                setting = manager.getCardStackSetting().rewindAnimationSetting;
+                animSetting = manager.getCardStackSetting().rewindAnimationSetting;
                 action.update(
                         x,
                         y,
-                        setting.getDuration(),
-                        setting.getInterpolator()
+                        animSetting.getDuration(),
+                        animSetting.getInterpolator()
                 );
                 break;
         }
@@ -140,10 +143,10 @@ public class CardStackSmoothScroller extends RecyclerView.SmoothScroller {
         }
     }
 
-    private int getDx(AnimationSetting setting) {
+    private int getDx(AnimationSetting animSetting, CardStackSetting stackSetting) {
         CardStackState state = manager.getCardStackState();
         int dx = 0;
-        switch (setting.getDirection()) {
+        switch (animSetting.getDirection()) {
             case Left:
                 dx = -state.width * 2;
                 break;
@@ -151,20 +154,25 @@ public class CardStackSmoothScroller extends RecyclerView.SmoothScroller {
                 dx = state.width * 2;
                 break;
             case Top:
+                if (stackSetting.imitateNaturalSwipe)
+                    dx = state.width;
+                break;
             case Bottom:
-                dx = 0;
+                if (stackSetting.imitateNaturalSwipe)
+                    dx = -state.width;
                 break;
         }
         return dx;
     }
 
-    private int getDy(AnimationSetting setting) {
+    private int getDy(AnimationSetting setting, CardStackSetting stackSetting) {
         CardStackState state = manager.getCardStackState();
         int dy = 0;
         switch (setting.getDirection()) {
             case Left:
             case Right:
-                dy = state.height / 4;
+                if (!stackSetting.imitateNaturalSwipe)
+                    dy = state.height / 4;
                 break;
             case Top:
                 dy = -state.height * 2;

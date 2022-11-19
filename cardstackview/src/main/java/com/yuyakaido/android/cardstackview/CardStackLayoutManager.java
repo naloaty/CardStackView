@@ -564,7 +564,12 @@ public class CardStackLayoutManager
     }
 
     private void smoothScrollToNext(int position) {
-        state.proportion = 0.0f;
+        if (setting.imitateNaturalSwipe) {
+            state.proportion = setting.swipeAnimationSetting.getNaturalSwipeZone();
+        } else {
+            state.proportion = 0.0f;
+        }
+
         state.targetPosition = position;
         CardStackSmoothScroller scroller = new CardStackSmoothScroller(CardStackSmoothScroller.ScrollType.AutomaticSwipe, this);
         scroller.setTargetPosition(state.topPosition);
@@ -577,7 +582,12 @@ public class CardStackLayoutManager
             listener.onCardDisappeared(getTopView(), state.topPosition);
         }
 
-        state.proportion = 0.0f;
+        if (setting.imitateNaturalSwipe) {
+            state.proportion = setting.swipeAnimationSetting.getNaturalSwipeZone();
+        } else {
+            state.proportion = 0.0f;
+        }
+
         state.targetPosition = position;
         state.topPosition--;
         CardStackSmoothScroller scroller = new CardStackSmoothScroller(CardStackSmoothScroller.ScrollType.AutomaticRewind, this);
@@ -661,6 +671,11 @@ public class CardStackLayoutManager
     public void setCanScrollVertical(boolean canScrollVertical) {
         setting.canScrollVertical = canScrollVertical;
     }
+
+    public void setImitateNaturalSwipe(boolean imitateNaturalSwipe) {
+        setting.imitateNaturalSwipe = imitateNaturalSwipe;
+    }
+
 
     public void setFadeLastCard(boolean fadeLastCard) {
         setting.fadeLastCard = fadeLastCard;

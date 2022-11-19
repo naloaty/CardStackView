@@ -8,4 +8,5 @@ public interface AnimationSetting {
     Direction getDirection();
     int getDuration();
     Interpolator getInterpolator();
+    float getNaturalSwipeZone();
 }
