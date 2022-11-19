@@ -414,7 +414,8 @@ public class CardStackLayoutManager
         int nextIndex = index - 1;
         float currentScale = 1.0f - index * (1.0f - setting.scaleInterval);
         float nextScale = 1.0f - nextIndex * (1.0f - setting.scaleInterval);
-        float targetScale = currentScale + (nextScale - currentScale) * state.getRatio();
+        float interpolation = setting.scaleInterpolator.getInterpolation(state.getRatio());
+        float targetScale = currentScale + (nextScale - currentScale) * interpolation;
         switch (setting.stackFrom) {
             case None:
                 view.setScaleX(targetScale);
@@ -664,6 +665,10 @@ public class CardStackLayoutManager
 
     public void setFadeInterpolator(@NonNull Interpolator fadeInterpolator) {
         setting.fadeInterpolator = fadeInterpolator;
+    }
+
+    public void setScaleInterpolator(@NonNull Interpolator scaleInterpolator) {
+        setting.scaleInterpolator = scaleInterpolator;
     }
 
 }
