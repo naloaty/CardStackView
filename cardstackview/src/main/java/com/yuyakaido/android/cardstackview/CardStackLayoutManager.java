@@ -336,18 +336,21 @@ public class CardStackLayoutManager
             resetScale(child);
             resetRotation(child);
             resetOverlay(child);
+            resetScalingFade(child);
 
             if (i == state.topPosition) {
                 updateTranslation(child);
-                resetScale(child);
+                // resetScale(child);
                 updateRotation(child);
                 updateOverlay(child);
+                // resetScalingFade(child);
             } else {
                 int currentIndex = i - state.topPosition;
                 updateTranslation(child, currentIndex);
                 updateScale(child, currentIndex);
-                resetRotation(child);
-                resetOverlay(child);
+                // resetRotation(child);
+                // resetOverlay(child);
+                updateScalingFade(child, currentIndex);
             }
         }
 
@@ -450,6 +453,24 @@ public class CardStackLayoutManager
                 view.setScaleY(targetScale);
                 break;
         }
+    }
+
+    private void updateScalingFade(View view, int index) {
+        if (!setting.fadeLastCard)
+            return;
+
+        if (setting.visibleCount - 1 != index)
+            return;
+
+        float alpha = setting.fadeInterpolator.getInterpolation(state.getRatio());
+        view.setAlpha(alpha);
+    }
+
+    private void resetScalingFade(View view) {
+        if (!setting.fadeLastCard)
+            return;
+
+        view.setAlpha(1.0f);
     }
 
     private void resetScale(View view) {
@@ -621,6 +642,10 @@ public class CardStackLayoutManager
         setting.canScrollVertical = canScrollVertical;
     }
 
+    public void setFadeLastCard(boolean fadeLastCard) {
+        setting.fadeLastCard = fadeLastCard;
+    }
+
     public void setSwipeableMethod(SwipeableMethod swipeableMethod) {
         setting.swipeableMethod = swipeableMethod;
     }
@@ -635,6 +660,10 @@ public class CardStackLayoutManager
 
     public void setOverlayInterpolator(@NonNull Interpolator overlayInterpolator) {
         setting.overlayInterpolator = overlayInterpolator;
+    }
+
+    public void setFadeInterpolator(@NonNull Interpolator fadeInterpolator) {
+        setting.fadeInterpolator = fadeInterpolator;
     }
 
 }
