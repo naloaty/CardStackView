@@ -67,14 +67,14 @@ public class CardStackState {
         }
     }
 
-    public float getRatio() {
+    public float getRatio(float ratioBound) {
         int absDx = Math.abs(dx);
         int absDy = Math.abs(dy);
         float ratio;
         if (absDx < absDy) {
-            ratio = absDy / (height / 2.0f);
+            ratio = absDy / (height * ratioBound);
         } else {
-            ratio = absDx / (width / 2.0f);
+            ratio = absDx / (width * ratioBound);
         }
         return Math.min(ratio, 1.0f);
     }

@@ -355,7 +355,7 @@ public class CardStackLayoutManager
         }
 
         if (state.status.isDragging()) {
-            listener.onCardDragging(state.getDirection(), state.getRatio());
+            listener.onCardDragging(state.getDirection(), state.getRatio(setting.dragRatioBound));
         }
     }
 
@@ -369,7 +369,9 @@ public class CardStackLayoutManager
         int translationPx = DisplayUtil.dpToPx(context, setting.translationInterval);
         float currentTranslation = index * translationPx;
         float nextTranslation = nextIndex * translationPx;
-        float targetTranslation = currentTranslation - (currentTranslation - nextTranslation) * state.getRatio();
+        float ratio = state.getRatio(setting.dragRatioBound);
+        float interpolation = setting.scaleInterpolator.getInterpolation(ratio);
+        float targetTranslation = currentTranslation - (currentTranslation - nextTranslation) * interpolation;
         switch (setting.stackFrom) {
             case None:
                 // Do nothing
@@ -414,7 +416,8 @@ public class CardStackLayoutManager
         int nextIndex = index - 1;
         float currentScale = 1.0f - index * (1.0f - setting.scaleInterval);
         float nextScale = 1.0f - nextIndex * (1.0f - setting.scaleInterval);
-        float interpolation = setting.scaleInterpolator.getInterpolation(state.getRatio());
+        float ratio = state.getRatio(setting.dragRatioBound);
+        float interpolation = setting.scaleInterpolator.getInterpolation(ratio);
         float targetScale = currentScale + (nextScale - currentScale) * interpolation;
         switch (setting.stackFrom) {
             case None:
@@ -463,7 +466,8 @@ public class CardStackLayoutManager
         if (setting.visibleCount - 1 != index)
             return;
 
-        float alpha = setting.fadeInterpolator.getInterpolation(state.getRatio());
+        float ratio = state.getRatio(setting.dragRatioBound);
+        float alpha = setting.fadeInterpolator.getInterpolation(ratio);
         view.setAlpha(alpha);
     }
 
@@ -506,7 +510,8 @@ public class CardStackLayoutManager
             bottomOverlay.setAlpha(0.0f);
         }
         Direction direction = state.getDirection();
-        float alpha = setting.overlayInterpolator.getInterpolation(state.getRatio());
+        float ratio = state.getRatio(setting.overlayRatioBound);
+        float alpha = setting.overlayInterpolator.getInterpolation(ratio);
         switch (direction) {
             case Left:
                 if (leftOverlay != null) {
@@ -622,6 +627,20 @@ public class CardStackLayoutManager
             throw new IllegalArgumentException("SwipeThreshold must be 0.0f to 1.0f.");
         }
         setting.swipeThreshold = swipeThreshold;
+    }
+
+    public void setDragRatioBound(@FloatRange(from = 0.0f, to = 1.0f) float dragRatioBound) {
+        if (dragRatioBound < 0.0f || 1.0f < dragRatioBound) {
+            throw new IllegalArgumentException("Drag ratio bound must be 0.0f to 1.0f.");
+        }
+        setting.dragRatioBound = dragRatioBound;
+    }
+
+    public void setOverlayRatioBound(@FloatRange(from = 0.0f, to = 1.0f) float overlayRatioBound) {
+        if (overlayRatioBound < 0.0f || 1.0f < overlayRatioBound) {
+            throw new IllegalArgumentException("Overlay ratio bound must be 0.0f to 1.0f.");
+        }
+        setting.overlayRatioBound = overlayRatioBound;
     }
 
     public void setMaxDegree(@FloatRange(from = -360.0f, to = 360.0f) float maxDegree) {
