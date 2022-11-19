@@ -618,6 +618,20 @@ public class CardStackLayoutManager
         setting.visibleCount = visibleCount;
     }
 
+    public void setMinSwipeDuration(@IntRange(from = 50) int minSwipeDuration) {
+        if (minSwipeDuration < 50) {
+            throw new IllegalArgumentException("MinSwipeDuration cannot be less than 50.");
+        }
+        setting.minSwipeDuration = minSwipeDuration;
+    }
+
+    public void setMaxSwipeDuration(@IntRange(from = 50) int maxSwipeDuration) {
+        if (maxSwipeDuration < 50) {
+            throw new IllegalArgumentException("MaxSwipeDuration cannot be less than 50.");
+        }
+        setting.maxSwipeDuration = maxSwipeDuration;
+    }
+
     public void setTranslationInterval(@FloatRange(from = 0.0f) float translationInterval) {
         if (translationInterval < 0.0f) {
             throw new IllegalArgumentException("TranslationInterval must be greater than or equal 0.0f");

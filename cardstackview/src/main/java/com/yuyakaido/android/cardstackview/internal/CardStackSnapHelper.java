@@ -31,16 +31,21 @@ public class CardStackSnapHelper extends SnapHelper {
                     CardStackSetting setting = manager.getCardStackSetting();
                     float horizontal = Math.abs(x) / (float) targetView.getWidth();
                     float vertical = Math.abs(y) / (float) targetView.getHeight();
-                    Duration duration = Duration.fromVelocity(velocityY < velocityX ? velocityX : velocityY);
-                    if (duration == Duration.Fast || setting.swipeThreshold < horizontal || setting.swipeThreshold < vertical) {
+
+                    int velocity = Math.max(velocityY, velocityX);
+                    int duration = setting.maxSwipeDuration - velocity / 10;
+                    duration = Math.max(duration, setting.minSwipeDuration);
+
+                    if (setting.swipeThreshold < horizontal || setting.swipeThreshold < vertical) {
                         CardStackState state = manager.getCardStackState();
                         if (setting.directions.contains(state.getDirection())) {
                             state.targetPosition = state.topPosition + 1;
 
                             SwipeAnimationSetting swipeAnimationSetting = new SwipeAnimationSetting.Builder()
                                     .setDirection(setting.swipeAnimationSetting.getDirection())
-                                    .setDuration(duration.duration)
+                                    .setDuration(duration)
                                     .setInterpolator(setting.swipeAnimationSetting.getInterpolator())
+                                    .setNaturalSwipeZone(setting.swipeAnimationSetting.getNaturalSwipeZone())
                                     .build();
                             manager.setSwipeAnimationSetting(swipeAnimationSetting);
 
