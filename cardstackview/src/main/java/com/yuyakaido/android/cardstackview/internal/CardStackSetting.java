@@ -28,6 +28,5 @@ public class CardStackSetting {
     public SwipeAnimationSetting swipeAnimationSetting = new SwipeAnimationSetting.Builder().build();
     public RewindAnimationSetting rewindAnimationSetting = new RewindAnimationSetting.Builder().build();
     public Interpolator overlayInterpolator = new LinearInterpolator();
-    public Interpolator fadeInterpolator = new LinearInterpolator();
-    public Interpolator scaleInterpolator = new LinearInterpolator();
+    public Interpolator ratioInterpolator = new LinearInterpolator();
 }

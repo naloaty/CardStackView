@@ -370,7 +370,7 @@ public class CardStackLayoutManager
         float currentTranslation = index * translationPx;
         float nextTranslation = nextIndex * translationPx;
         float ratio = state.getRatio(setting.dragRatioBound);
-        float interpolation = setting.scaleInterpolator.getInterpolation(ratio);
+        float interpolation = setting.ratioInterpolator.getInterpolation(ratio);
         float targetTranslation = currentTranslation - (currentTranslation - nextTranslation) * interpolation;
         switch (setting.stackFrom) {
             case None:
@@ -417,7 +417,7 @@ public class CardStackLayoutManager
         float currentScale = 1.0f - index * (1.0f - setting.scaleInterval);
         float nextScale = 1.0f - nextIndex * (1.0f - setting.scaleInterval);
         float ratio = state.getRatio(setting.dragRatioBound);
-        float interpolation = setting.scaleInterpolator.getInterpolation(ratio);
+        float interpolation = setting.ratioInterpolator.getInterpolation(ratio);
         float targetScale = currentScale + (nextScale - currentScale) * interpolation;
         switch (setting.stackFrom) {
             case None:
@@ -467,7 +467,7 @@ public class CardStackLayoutManager
             return;
 
         float ratio = state.getRatio(setting.dragRatioBound);
-        float alpha = setting.fadeInterpolator.getInterpolation(ratio);
+        float alpha = setting.ratioInterpolator.getInterpolation(ratio);
         view.setAlpha(alpha);
     }
 
@@ -682,12 +682,8 @@ public class CardStackLayoutManager
         setting.overlayInterpolator = overlayInterpolator;
     }
 
-    public void setFadeInterpolator(@NonNull Interpolator fadeInterpolator) {
-        setting.fadeInterpolator = fadeInterpolator;
-    }
-
-    public void setScaleInterpolator(@NonNull Interpolator scaleInterpolator) {
-        setting.scaleInterpolator = scaleInterpolator;
+    public void setRatioInterpolator(@NonNull Interpolator ratioInterpolator) {
+        setting.ratioInterpolator = ratioInterpolator;
     }
 
 }
