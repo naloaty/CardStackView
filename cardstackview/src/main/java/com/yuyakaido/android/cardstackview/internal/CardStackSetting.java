@@ -27,6 +27,7 @@ public class CardStackSetting {
     public boolean canScrollVertical = true;
     public boolean fadeLastCard = false;
     public boolean imitateNaturalSwipe = false;
+    public boolean dynamicThreshold = false;
     public SwipeableMethod swipeableMethod = SwipeableMethod.AutomaticAndManual;
     public SwipeAnimationSetting swipeAnimationSetting = new SwipeAnimationSetting.Builder().build();
     public RewindAnimationSetting rewindAnimationSetting = new RewindAnimationSetting.Builder().build();

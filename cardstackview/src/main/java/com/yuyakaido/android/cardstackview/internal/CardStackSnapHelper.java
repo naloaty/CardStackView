@@ -36,7 +36,13 @@ public class CardStackSnapHelper extends SnapHelper {
                     int duration = setting.maxSwipeDuration - velocity / 10;
                     duration = Math.max(duration, setting.minSwipeDuration);
 
-                    if (setting.swipeThreshold < horizontal || setting.swipeThreshold < vertical) {
+                    float swipeThreshold = setting.swipeThreshold;
+
+                    if (setting.dynamicThreshold) {
+                        swipeThreshold *= 1f - velocity / 5000f;
+                    }
+
+                    if (swipeThreshold < horizontal || swipeThreshold < vertical) {
                         CardStackState state = manager.getCardStackState();
                         if (setting.directions.contains(state.getDirection())) {
                             state.targetPosition = state.topPosition + 1;

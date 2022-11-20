@@ -10,13 +10,4 @@ public enum Duration {
     Duration(int duration) {
         this.duration = duration;
     }
-
-    public static Duration fromVelocity(int velocity) {
-        if (velocity < 1000) {
-            return Slow;
-        } else if (velocity < 5000) {
-            return Normal;
-        }
-        return Fast;
-    }
 }

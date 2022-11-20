@@ -695,6 +695,10 @@ public class CardStackLayoutManager
         setting.fadeLastCard = fadeLastCard;
     }
 
+    public void setDynamicThreshold(boolean dynamicThreshold) {
+        setting.dynamicThreshold = dynamicThreshold;
+    }
+
     public void setSwipeableMethod(SwipeableMethod swipeableMethod) {
         setting.swipeableMethod = swipeableMethod;
     }
