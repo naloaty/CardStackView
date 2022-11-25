@@ -618,6 +618,10 @@ public class CardStackLayoutManager
         setting.visibleCount = visibleCount;
     }
 
+    public void setCardStackListener(@NonNull CardStackListener listener) {
+        this.listener = listener;
+    }
+
     public void setMinSwipeDuration(@IntRange(from = 50) int minSwipeDuration) {
         if (minSwipeDuration < 50) {
             throw new IllegalArgumentException("MinSwipeDuration cannot be less than 50.");
