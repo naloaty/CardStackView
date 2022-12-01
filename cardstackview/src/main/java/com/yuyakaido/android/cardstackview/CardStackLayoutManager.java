@@ -332,7 +332,7 @@ public class CardStackLayoutManager
             measureChildWithMargins(child, 0, 0);
             layoutDecoratedWithMargins(child, parentLeft, parentTop, parentRight, parentBottom);
 
-            //resetTranslation(child);
+            resetTranslation(child);
             //resetScale(child);
             //resetRotation(child);
             //resetOverlay(child);
@@ -340,16 +340,16 @@ public class CardStackLayoutManager
 
             if (i == state.topPosition) {
                 updateTranslation(child);
-                //resetScale(child);
+                resetScale(child);
                 updateRotation(child);
                 updateOverlay(child);
-                //resetScalingFade(child);
+                resetScalingFade(child);
             } else {
                 int currentIndex = i - state.topPosition;
                 updateTranslation(child, currentIndex);
                 updateScale(child, currentIndex);
-                //resetRotation(child);
-                //resetOverlay(child);
+                resetRotation(child);
+                resetOverlay(child);
                 updateScalingFade(child, currentIndex);
             }
         }
