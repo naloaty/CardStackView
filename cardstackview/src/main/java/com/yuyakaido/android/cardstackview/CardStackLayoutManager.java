@@ -345,12 +345,21 @@ public class CardStackLayoutManager
                 updateOverlay(child);
                 resetScalingFade(child);
             } else {
-                int currentIndex = i - state.topPosition;
-                updateTranslation(child, currentIndex);
-                updateScale(child, currentIndex);
-                resetRotation(child);
-                resetOverlay(child);
-                updateScalingFade(child, currentIndex);
+                // Dirty hack to support change animation
+                if (state.status == CardStackState.Status.Dragging) {
+                    if (child.getVisibility() == View.INVISIBLE)
+                        child.setVisibility(View.VISIBLE);
+
+                    int currentIndex = i - state.topPosition;
+                    updateTranslation(child, currentIndex);
+                    updateScale(child, currentIndex);
+                    resetRotation(child);
+                    resetOverlay(child);
+                    updateScalingFade(child, currentIndex);
+                } else {
+                    if (child.getVisibility() == View.VISIBLE)
+                        child.setVisibility(View.INVISIBLE);
+                }
             }
         }
 
