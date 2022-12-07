@@ -339,6 +339,9 @@ public class CardStackLayoutManager
             //resetScalingFade(child);
 
             if (i == state.topPosition) {
+                if (child.getVisibility() == View.INVISIBLE)
+                    child.setVisibility(View.VISIBLE);
+
                 updateTranslation(child);
                 resetScale(child);
                 updateRotation(child);
@@ -346,7 +349,10 @@ public class CardStackLayoutManager
                 resetScalingFade(child);
             } else {
                 // Dirty hack to support change animation
-                if (state.status == CardStackState.Status.Dragging) {
+                if (state.status == CardStackState.Status.Idle) {
+                    if (child.getVisibility() == View.VISIBLE)
+                        child.setVisibility(View.INVISIBLE);
+                } else {
                     if (child.getVisibility() == View.INVISIBLE)
                         child.setVisibility(View.VISIBLE);
 
@@ -356,9 +362,6 @@ public class CardStackLayoutManager
                     resetRotation(child);
                     resetOverlay(child);
                     updateScalingFade(child, currentIndex);
-                } else {
-                    if (child.getVisibility() == View.VISIBLE)
-                        child.setVisibility(View.INVISIBLE);
                 }
             }
         }
